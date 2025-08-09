@@ -3,7 +3,7 @@
 @section('main')
     <main class="content">
         <div class="container-fluid p-0">
-
+            <a href="{{ route('roles.index') }}" class="btn btn-primary float-end mt-n1">Back</a>
             <h1 class="h3 mb-3">Role Detail</h1>
 
             <div class="row">
@@ -16,7 +16,7 @@
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <span><b>Name:</b></span>
-                                    <span>Super Admin</span>
+                                    <span>{{ $role->name }}</span>
                                 </div>
                             </div>
                         </div>

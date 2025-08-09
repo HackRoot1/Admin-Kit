@@ -8,7 +8,9 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <form>
+                    <form action="{{ route('role.store') }}" method="POST">
+                        @csrf
+                        @method('POST')
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="card-title">Role Details:</h5>
@@ -16,57 +18,34 @@
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label class="form-label" for="name">Name</label>
-                                    <input type="text" class="form-control is-invalid" id="name" placeholder="Name">
-                                    <div class="invalid-feedback">
-                                        Please enter Name.
-                                    </div>
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                        name="name" value="{{ old('name') }}" id="name" placeholder="Name">
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            Please enter Name.
+                                        </div>
+                                    @enderror
                                 </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title">Permissions Details:</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="view_admin">
-                                                <label class="form-check-label" for="view_admin">View Admin </label>
-                                            </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="name">Display Name</label>
+                                    <input type="text" class="form-control @error('display_name') is-invalid @enderror"
+                                        name="display_name" value="{{ old('display_name') }}" id="name" placeholder="Display Name">
+                                    @error('display_name')
+                                        <div class="invalid-feedback">
+                                            Please enter Display Name.
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="create_admin">
-                                                <label class="form-check-label" for="create_admin">Create Admin </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="update_admin">
-                                                <label class="form-check-label" for="update_admin">Update Admin </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="delete_admin">
-                                                <label class="form-check-label" for="delete_admin">Delete Admin </label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @enderror
                                 </div>
-   
-
+                                <div class="mb-3">
+                                    <label class="form-label" for="name">Description</label>
+                                    <input type="text" class="form-control @error('description') is-invalid @enderror"
+                                        name="description" value="{{ old('description') }}" id="name" placeholder="Description">
+                                    @error('description')
+                                        <div class="invalid-feedback">
+                                            Please enter Description.
+                                        </div>
+                                    @enderror
+                                </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
@@ -77,4 +56,3 @@
         </div>
     </main>
 @endsection
- 

@@ -4,7 +4,8 @@
     <main class="content">
         <div class="container-fluid p-0">
 
-            <a href="{{ route('roles.create') }}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> New Role</a>
+            <a href="{{ route('role.create') }}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> New
+                Role</a>
             <div class="mb-3">
                 <h1 class="h3 d-inline align-middle">Roles List</h1>
             </div>
@@ -34,45 +35,37 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Created By</th>
+                                        <th>Display Name</th>
+                                        <th>Description</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><strong>#0001</strong></td>
-                                        <td>Super Admin</td>
-                                        <td>Brian</td>
-                                        <td><span class="badge badge-success-light">Active</span></td>
-                                        <td>
-                                            <a href="{{ route('roles.view') }}" class="btn btn-primary btn-sm">View</a>
-                                            <a href="{{ route('roles.edit') }}" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="{{ route('roles.edit') }}" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>#0001</strong></td>
-                                        <td>Admin</td>
-                                        <td>Brian Smith</td>
-                                        <td><span class="badge badge-success-light">Active</span></td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">View</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>#0001</strong></td>
-                                        <td>Staff</td>
-                                        <td>Brian Smith</td>
-                                        <td><span class="badge badge-danger-light">Inactive</span></td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">View</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
+                                    @foreach ($roles as $role)
+                                        <tr>
+                                            <td><strong># {{ $role->id }}</strong></td>
+                                            <td>{{ $role->name }}</td>
+                                            <td>{{ $role->display_name }}</td>
+                                            <td>{{ $role->description }}</td>
+                                            <td><span class="badge badge-success-light">Active</span></td>
+                                            <td>
+                                                <a href="{{ route('role.show', $role->id) }}"
+                                                    class="btn btn-primary btn-sm">View</a>
+                                                <a href="{{ route('role.edit', $role->id) }}"
+                                                    class="btn btn-primary btn-sm">Edit</a>
+                                                <form action="{{ route('role.destroy', $role->id) }}" method="POST"
+                                                    style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Are you sure you want to delete this role?')">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -82,5 +75,4 @@
 
         </div>
     </main>
-
 @endsection

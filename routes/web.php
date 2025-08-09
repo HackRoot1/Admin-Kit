@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RolesController;
 use Illuminate\Support\Facades\Route;
 
 // Auth Routes
@@ -26,13 +27,15 @@ Route::view('staffs-delete', 'staffs.delete')->name('staffs.delete');
 Route::view('staffs-view', 'staffs.view')->name('staffs.view');
 
 // Roles Related Routes
-Route::view('roles-index', 'roles.index')->name('roles.index');
-Route::view('roles-create', 'roles.create')->name('roles.create');
-Route::view('roles-store', 'roles.store')->name('roles.store');
-Route::view('roles-edit', 'roles.edit')->name('roles.edit');
-Route::view('roles-update', 'roles.update')->name('roles.update');
-Route::view('roles-delete', 'roles.delete')->name('roles.delete');
-Route::view('roles-view', 'roles.view')->name('roles.view');
+Route::controller(RolesController::class)->group(function() {
+    Route::get('roles-index', 'index')->name('roles.index');
+    Route::view('roles-create', 'roles.create')->name('role.create');
+    Route::post('roles-store', 'store')->name('role.store');
+    Route::get('roles-edit/{id}', 'edit')->name('role.edit');
+    Route::put('roles-update/{id}', 'update')->name('role.update');
+    Route::delete('roles-delete/{id}', 'destroy')->name('role.destroy');
+    Route::get('roles-show/{id}', 'show')->name('role.show');
+});
 
 // Roles Related Routes
 Route::view('permissions-index', 'permissions.index')->name('permissions.index');
