@@ -27,8 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::view('settings', 'settings.settings')->name('settings.settings');
 
 
-    // Staff Related Routes
-    Route::controller(UserController::class)->group(function () {
+    // Staff Related Routes 
+    Route::controller(UserController::class)->group(function () { 
         Route::get('staffs-index', 'index')->name('staffs.index')->middleware('permission:view-staff');
         Route::view('staffs-create', 'staffs.create')->name('staff.create')->middleware('permission:create-staff');
         Route::post('staffs-store', 'store')->name('staff.store')->middleware('permission:create-staff');
@@ -78,7 +78,7 @@ Route::middleware('auth')->group(function () {
     // Invoice Related Routes
     Route::view('invoices', 'invoices.invoice')->name('invoices.index');
     Route::view('payments', 'invoices.payments')->name('invoices.payments');
-    Route::view('checkout', 'invoices.checkout')->name('invoices.checkout');
+    Route::view('checkout', 'invoices.make-payment')->name('invoices.checkout');
 
     // Activity Log
     Route::controller(ActivityController::class)->group(function () {

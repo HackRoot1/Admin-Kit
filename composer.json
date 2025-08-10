@@ -10,11 +10,14 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "laravolt/avatar": "^6.2",
+        "nnjeim/world": "^1.1",
         "php-flasher/flasher-laravel": "^2.1",
         "santigarcor/laratrust": "^8.5",
         "spatie/laravel-activitylog": "^4.10"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.16",
+        "beyondcode/laravel-query-detector": "^2.1",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",

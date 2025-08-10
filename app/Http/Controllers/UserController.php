@@ -14,7 +14,7 @@ class UserController extends Controller
     //
     public function index()
     {
-        $staffs = User::all();
+        $staffs = User::latest()->get();
         return view('staffs.index', compact('staffs'));
     }
 

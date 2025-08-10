@@ -11,7 +11,9 @@
                             <h5 class="card-title">Payment Checkout Details:</h5>
                         </div>
                         <div class="card-body">
-                            <form>
+                            <form method="POST">
+                                @csrf 
+                                @method('POST')
                                 <div class="mb-3">
                                     <label class="form-label" for="full_name">Full Name</label>
                                     <input type="text" class="form-control" id="full_name" placeholder="Full Name">

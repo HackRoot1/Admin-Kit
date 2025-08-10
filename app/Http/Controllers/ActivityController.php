@@ -9,7 +9,7 @@ class ActivityController extends Controller
 {
     //
     public function index() {
-        $activities = Activity::latest()->get();
+        $activities = Activity::with('causer', 'subject')->latest()->get();
         return view('activity-logs', compact('activities'));
     }
 }
