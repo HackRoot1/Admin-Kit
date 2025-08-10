@@ -1,6 +1,3 @@
-Here’s your **`README.md`** version formatted for clarity:
-
-````markdown
 # Roles and Permissions Setup (Laravel + Laratrust)
 
 ## Step 1: Create a Laravel Project
@@ -97,10 +94,3 @@ php artisan migrate
 ---
 
 ✅ **All set!** You now have Roles and Permissions functionality in your Laravel app using **Laratrust**.
-
-```
-
----
-
-Do you want me to also **extend this README** so it includes **examples of assigning roles/permissions** dynamically after creation? That would make it a complete guide.
-```
