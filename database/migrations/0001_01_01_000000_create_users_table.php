@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->json('skills')->nullable(); // Storing as JSON for flexibility
             $table->string('department')->nullable();
+            $table->string('profile')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

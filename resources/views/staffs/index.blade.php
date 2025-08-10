@@ -47,7 +47,7 @@
                                     @foreach ($staffs as $staff)
                                         <tr>
                                             <td><strong>{{ $staff->id }}</strong></td>
-                                            <td><img src="{{ $staff->profile ?? Avatar::create($staff->first_name . ' ' . $staff->last_name)->toBase64() }}"
+                                            <td><img src="{{ asset('uploads/profile/small/' . $staff->profile) ?? Avatar::create($staff->first_name . ' ' . $staff->last_name)->toBase64() }}"
                                                     width="50" alt=""></td>
                                             <td>{{ $staff->first_name }}</td>
                                             <td>{{ $staff->last_name }}</td>
@@ -59,10 +59,10 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                @permission('view-staff')
+                                                {{-- @permission('view-staff') --}}
                                                     <a href="{{ route('staff.show', $staff->id) }}"
                                                         class="btn btn-primary btn-sm">View</a>
-                                                @endpermission
+                                                {{-- @endpermission --}}
                                                 @permission('update-staff')
                                                     <a href="{{ route('staff.edit', $staff->id) }}"
                                                         class="btn btn-primary btn-sm">Edit</a>

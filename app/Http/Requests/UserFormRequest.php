@@ -36,6 +36,7 @@ class UserFormRequest extends FormRequest
             'skills' => 'nullable|array', // if JSON array
             'skills.*' => 'nullable|string|max:50', // each skill item
             'department' => 'nullable|string|max:50',
+            'profile' => 'nullable|mimes:png,jpg,jpeg',
 
             // Address table
             'address_line_1' => 'nullable|string|max:255',

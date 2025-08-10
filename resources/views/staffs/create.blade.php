@@ -17,7 +17,7 @@
                             <form action="{{ route('staff.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('POST')
-                                
+
                                 {{-- Profile Pic --}}
                                 <div class="mb-3">
                                     <label class="form-label" for="profile">Profile Pic</label>
@@ -254,4 +254,47 @@
 
         </div>
     </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Load countries
+            $.get('/countries', function(data) {
+                data.data.forEach(function(country) {
+                    $('#country').append('<option value="' + country.name + '">' + country.name +
+                        '</option>');
+                });
+            });
+
+            // Load states when country changes
+            $('#country').on('change', function() {
+                let countryId = $(this).val();
+                $('#state').empty().append('<option value="">Choose...</option>');
+                $('#city').empty().append('<option value="">Choose...</option>');
+
+                if (countryId) {
+                    $.get('/states/' + countryId, function(data) {
+                        data.data.forEach(function(state) {
+                            $('#state').append('<option value="' + state.name + '">' + state
+                                .name + '</option>');
+                        });
+                    });
+                }
+            });
+
+            // Load cities when state changes
+            $('#state').on('change', function() {
+                let stateId = $(this).val();
+                $('#city').empty().append('<option value="">Choose...</option>');
+
+                if (stateId) {
+                    $.get('/cities/' + stateId, function(data) {
+                        data.data.forEach(function(city) {
+                            $('#city').append('<option value="' + city.name + '">' + city
+                                .name + '</option>');
+                        });
+                    });
+                }
+            });
+        });
+    </script>
 @endsection

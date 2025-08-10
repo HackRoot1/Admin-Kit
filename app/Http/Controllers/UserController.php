@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Nnjeim\World\World;
 use Laratrust\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
 use App\Http\Requests\UserFormRequest;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class UserController extends Controller
 {
@@ -25,6 +29,9 @@ class UserController extends Controller
         try {
             DB::transaction(function () use ($validated) {
                 // 1. Create user
+
+                dd($validated['profile']);
+
                 $user = User::create([
                     'first_name' => $validated['first_name'],
                     'last_name' => $validated['last_name'],
@@ -34,8 +41,9 @@ class UserController extends Controller
                     'emergency_contact_number' => $validated['emergency_contact_number'] ?? null,
                     'dob' => $validated['dob'] ?? null,
                     'gender' => $validated['gender'] ?? null,
-                    'skills' => isset($validated['skills']) ? json_encode($validated['skills']) : null,
+                    'skills' => isset($validated['skills']) ? $validated['skills'] : null,
                     'department' => $validated['department'] ?? null,
+                    'profile' => $validated['profile'] ?? null,
                 ]);
 
                 // 2. Create related address
@@ -67,7 +75,6 @@ class UserController extends Controller
     {
         $staff = User::with('address', 'roles')->findOrFail($id);
         $roles = Role::all();
-        // dd($staff);
         return view('staffs.view', compact('staff', 'roles'));
     }
 
@@ -81,12 +88,52 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
+        // Handle password
         if (empty($data['password'])) {
             unset($data['password']);
         }
-
+        // Update staff
         $staff = User::findOrFail($id);
+
+        
+        // Handle profile image
+        if ($request->hasFile('profile')) {
+            
+            if ($staff->profile != '') {
+                if (File::exists(public_path('uploads/profile/' . $staff->profile))) {
+                    File::delete(public_path('uploads/profile/' . $staff->profile));
+                }
+    
+                if (File::exists(public_path('uploads/profile/small/' . $staff->profile))) {
+                    File::delete(public_path('uploads/profile/small/' . $staff->profile));
+                }
+            }
+            
+            $profile = $data['profile'];
+            $ext = $profile->getClientOriginalExtension();
+            $profileName = time() . '.' . $ext;
+            $profile->move(public_path('uploads/profile'), $profileName);
+
+            $manager = new ImageManager(Driver::class);
+            $image = $manager->read(public_path('uploads/profile/' . $profileName));
+
+            $image->resize(400, 500);
+
+            $smallDir = public_path('uploads/profile/small');
+            if (!File::exists($smallDir)) {
+                File::makeDirectory($smallDir, 0755, true); 
+            }
+
+            $image->save(public_path('uploads/profile/small/' . $profileName));
+            $image->save();
+
+            $data['profile'] = $profileName;
+        } else {
+            unset($data['profile']);
+        }
+
         $updated = $staff->update($data);
+
 
         if (!$updated) {
             return back()->with('error', 'Something went wrong');

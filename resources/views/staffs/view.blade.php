@@ -17,7 +17,7 @@
                             <div class="row g-4">
                                 <div class="col-md-12">
                                     <span><b>Profile:</b></span>
-                                    <img src="{{ $staff->profile ?? Avatar::create($staff->first_name . ' ' . $staff->last_name)->toBase64() }}"
+                                    <img src="{{ asset('uploads/profile/small/' . $staff->profile) ?? Avatar::create($staff->first_name . ' ' . $staff->last_name)->toBase64() }}"
                                         width="100" height="100" class="rounded ms-2" alt="Avatar">
                                 </div>
                                 <div class="col-md-6">
@@ -129,11 +129,13 @@
                                         $skills = json_decode($staff->skills, true) ?? [];
                                     @endphp --}}
 
-                                    @forelse ($staff->skills as $skill)
-                                        <span class="badge bg-secondary">{{ strtoupper($skill) }}</span>
-                                    @empty
-                                        <span>No skills listed</span>
-                                    @endforelse
+                                    @isset($staff->skills)
+                                        @forelse ($staff->skills as $skill)
+                                            <span class="badge bg-secondary">{{ strtoupper($skill) }}</span>
+                                        @empty
+                                            <span>No skills listed</span>
+                                        @endforelse
+                                    @endisset
 
                                 </div>
                             </div>
@@ -148,27 +150,27 @@
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <span><b>Address Line 1:</b></span>
-                                    <span>{{ $staff->address->address_line_1 }}</span>
+                                    <span>{{ $staff->address->address_line_1 ?? '' }}</span>
                                 </div>
                                 <div class="col-md-6">
                                     <span><b>Address Line 2:</b></span>
-                                    <span>{{ $staff->address->address_line_2 }}</span>
+                                    <span>{{ $staff->address->address_line_2 ?? '' }}</span>
                                 </div>
                                 <div class="col-md-6">
                                     <span><b>Country:</b></span>
-                                    <span>{{ $staff->address->country }}</span>
+                                    <span>{{ $staff->address->country->name ?? '' }}</span>
                                 </div>
                                 <div class="col-md-6">
                                     <span><b>State:</b></span>
-                                    <span>{{ $staff->address->state }}</span>
+                                    <span>{{ $staff->address->state ?? '' }}</span>
                                 </div>
                                 <div class="col-md-6">
                                     <span><b>City:</b></span>
-                                    <span>{{ $staff->address->city }}</span>
+                                    <span>{{ $staff->address->city ?? '' }}</span>
                                 </div>
                                 <div class="col-md-6">
                                     <span><b>Zip:</b></span>
-                                    <span>{{ $staff->address->zip_code }}</span>
+                                    <span>{{ $staff->address->zip_code ?? '' }}</span>
                                 </div>
                             </div>
                         </div>

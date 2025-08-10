@@ -1,11 +1,17 @@
 <?php
 
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RolesController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RolesController;
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\PermissionController;
+
+
+Route::get('/countries', [LocationController::class, 'countries']);
+Route::get('/states/{country_id}', [LocationController::class, 'states']);
+Route::get('/cities/{state_id}', [LocationController::class, 'cities']);
 
 // Auth Routes
 Route::controller(AuthController::class)->group(function () {
@@ -28,14 +34,14 @@ Route::middleware('auth')->group(function () {
 
 
     // Staff Related Routes 
-    Route::controller(UserController::class)->group(function () { 
-        Route::get('staffs-index', 'index')->name('staffs.index')->middleware('permission:view-staff');
-        Route::view('staffs-create', 'staffs.create')->name('staff.create')->middleware('permission:create-staff');
-        Route::post('staffs-store', 'store')->name('staff.store')->middleware('permission:create-staff');
-        Route::get('staffs-edit/{id}', 'edit')->name('staff.edit')->middleware('permission:update-staff');
-        Route::put('staffs-update/{id}', 'update')->name('staff.update')->middleware('permission:update-staff');
-        Route::delete('staffs-delete/{id}', 'destroy')->name('staff.destroy')->middleware('permission:delete-staff');
-        Route::get('staffs-show/{id}', 'show')->name('staff.show')->middleware('permission:view-staff');
+    Route::controller(UserController::class)->group(function () {
+        Route::get('staffs-index', 'index')->name('staffs.index');
+        Route::view('staffs-create', 'staffs.create')->name('staff.create');
+        Route::post('staffs-store', 'store')->name('staff.store');
+        Route::get('staffs-edit/{id}', 'edit')->name('staff.edit');
+        Route::put('staffs-update/{id}', 'update')->name('staff.update');
+        Route::delete('staffs-delete/{id}', 'destroy')->name('staff.destroy');
+        Route::get('staffs-show/{id}', 'show')->name('staff.show');
     });
 
     // 

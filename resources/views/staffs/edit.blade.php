@@ -21,7 +21,7 @@
                                 {{-- Show existing profile picture --}}
                                 @if ($staff->profile)
                                     <div class="mb-3">
-                                        <img src="{{ asset('storage/' . $staff->profile) }}" alt="Profile"
+                                        <img src="{{ asset('uploads/profile/small/' . $staff->profile) }}" alt="Profile"
                                             style="width: 100px; height: auto;">
                                     </div>
                                 @endif
@@ -147,7 +147,7 @@
                                                 <label class="form-check">
                                                     <input name="skills[]" value="{{ $skill }}" type="checkbox"
                                                         class="form-check-input @error('skills') is-invalid @enderror"
-                                                        {{ in_array($skill, $staff->skills, true) ? 'checked' : '' }}>
+                                                        {{ in_array($skill, $staff->skills ?? [], true) ? 'checked' : '' }}>
                                                     <span class="form-check-label">{{ strtoupper($skill) }}</span>
                                                 </label>
                                             </div>

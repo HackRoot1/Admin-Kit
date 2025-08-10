@@ -17,13 +17,13 @@
             <li class="sidebar-header">
                 Access Control
             </li>
-            @permission('view-staff')
+            {{-- @permission('view-staff') --}}
                 <li class="sidebar-item">
                     <a class='sidebar-link' href='{{ route('staffs.index') }}'>
                         <i class="align-middle" data-feather="user"></i> <span class="align-middle">Staffs</span>
                     </a>
                 </li>
-            @endpermission
+            {{-- @endpermission --}}
 
             <li class="sidebar-item">
                 <a class='sidebar-link' href='{{ route('roles.index') }}'>
