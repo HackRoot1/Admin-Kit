@@ -17,11 +17,13 @@
             <li class="sidebar-header">
                 Access Control
             </li>
-            <li class="sidebar-item">
-                <a class='sidebar-link' href='{{ route('staffs.index') }}'>
-                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Staffs</span>
-                </a>
-            </li>
+            @permission('view-staff')
+                <li class="sidebar-item">
+                    <a class='sidebar-link' href='{{ route('staffs.index') }}'>
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Staffs</span>
+                    </a>
+                </li>
+            @endpermission
 
             <li class="sidebar-item">
                 <a class='sidebar-link' href='{{ route('roles.index') }}'>
@@ -89,9 +91,14 @@
 
         <div class="sidebar-cta">
             <div class="sidebar-cta-content">
-                <div class="d-grid">
-                    <a href="#" class="btn btn-outline-primary" target="_blank">Logout</a>
-                </div>
+                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                    @csrf
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-outline-primary">
+                            Log out
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

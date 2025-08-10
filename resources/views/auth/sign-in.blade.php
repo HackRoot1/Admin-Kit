@@ -32,16 +32,29 @@
                                         <hr>
                                     </div>
                                 </div>
-                                <form>
+                                <form action="{{ route('authenticate') }}" method="POST">
+                                    @csrf
+                                    @method('POST')
                                     <div class="mb-3">
                                         <label class="form-label">Email</label>
-                                        <input class="form-control form-control-lg" type="email" name="email"
-                                            placeholder="Enter your email" />
+                                        <input class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                            type="email" name="email" value="{{ old('email') }}" placeholder="Enter your email" />
+                                        @error('email')
+                                            <div class="invalid-feedback">
+                                                Please enter Email.
+                                            </div>
+                                        @enderror
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Password</label>
-                                        <input class="form-control form-control-lg" type="password" name="password"
-                                            placeholder="Enter your password" />
+                                        <input
+                                            class="form-control form-control-lg  @error('password') is-invalid @enderror"
+                                            type="password" name="password" placeholder="Enter your password" />
+                                        @error('password')
+                                            <div class="invalid-feedback">
+                                                Please enter Password.
+                                            </div>
+                                        @enderror
                                         <small>
                                             <a href='pages-reset-password.html'>Forgot password?</a>
                                         </small>
@@ -55,7 +68,7 @@
                                         </div>
                                     </div>
                                     <div class="d-grid gap-2 mt-3">
-                                        <a class='btn btn-lg btn-primary' href='index.html'>Sign in</a>
+                                        <button class='btn btn-lg btn-primary' type="submit">Sign In</button>
                                     </div>
                                 </form>
                             </div>

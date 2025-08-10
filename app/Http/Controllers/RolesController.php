@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,7 +31,8 @@ class RolesController extends Controller
     public function show($id)
     {
         $role = Role::findOrFail($id);
-        return view('roles.view', compact('role'));
+        $permissions = Permission::all();
+        return view('roles.view', compact('role', 'permissions'));
     }
 
     public function edit($id)
@@ -61,5 +63,19 @@ class RolesController extends Controller
             return back()->with('error', 'Failed to delete role.');
         }
         return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
+    }
+
+    public function updatePermissions(Request $request, $roleId)
+    {
+        $role = Role::findOrFail($roleId);
+
+        // Ensure permissions array exists (empty array if none selected)
+        $permissions = $request->input('permissions', []);
+
+        // Laratrust method to sync permissions
+        $role->syncPermissions($permissions);
+
+        return redirect()->route('role.show', $roleId)
+            ->with('success', 'Permissions updated successfully.');
     }
 }

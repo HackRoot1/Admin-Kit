@@ -45,7 +45,8 @@
                                 </div>
                                 <div class="col-10">
                                     <div class="text-dark">Lorem ipsum</div>
-                                    <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate hendrerit et.</div>
+                                    <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate hendrerit
+                                        et.</div>
                                     <div class="text-muted small mt-1">2h ago</div>
                                 </div>
                             </div>
@@ -79,19 +80,31 @@
                     </div>
                 </div>
             </li>
-            
+
             <li class="nav-item dropdown">
                 <a class="nav-icon pe-md-0 dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                    <img src="{{ asset('assets/img/avatars/avatar.jpg') }}" class="avatar img-fluid rounded" alt="Charles Hall" />
+                    {{-- <img src="{{ $staff->profile ?? Avatar::create($staff->first_name . ' ' . $staff->last_name)->toBase64() }}" class="avatar img-fluid rounded" --}}
+                    <img src="{{ asset('assets/img/avatars/avatar.jpg') }}" class="avatar img-fluid rounded"
+                        alt="Charles Hall" />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a class='dropdown-item' href='{{ route('settings.profile') }}'><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+                    <a class='dropdown-item' href='{{ route('settings.profile') }}'><i class="align-middle me-1"
+                            data-feather="user"></i> Profile</a>
                     <div class="dropdown-divider"></div>
-                    <a class='dropdown-item' href='{{ route('settings.settings') }}'><i class="align-middle me-1" data-feather="settings"></i> Settings &
+                    <a class='dropdown-item' href='{{ route('settings.settings') }}'><i class="align-middle me-1"
+                            data-feather="settings"></i> Settings &
                         Privacy</a>
-                    <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+                    <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i>
+                        Help Center</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Log out</a>
+                    <div class="dropdown-item" href="#">
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" style="background:none;border:none;padding:0;color:blue;cursor:pointer;">
+                                Log out
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </li>
         </ul>

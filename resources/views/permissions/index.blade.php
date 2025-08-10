@@ -3,7 +3,8 @@
 @section('main')
     <main class="content">
         <div class="container-fluid p-0">
-            <a href="add-permission.php" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> New Permission</a>
+            <a href="{{ route('permission.create') }}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> New
+                Permission</a>
             <div class="mb-3">
                 <h1 class="h3 d-inline align-middle">Permissions List</h1>
             </div>
@@ -31,35 +32,37 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Created By</th>
+                                        <th>Display Name</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><strong>#0001</strong></td>
-                                        <td>View Admin</td>
-                                        <td>Brian</td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>#0002</strong></td>
-                                        <td>Create Admin</td>
-                                        <td>Brian Smith</td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>#0003</strong></td>
-                                        <td>Update Admin</td>
-                                        <td>Brian Smith</td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
+                                    @foreach ($permissions as $permission)
+                                        <tr>
+                                            <td><strong># {{ $permission->id }}</strong></td>
+                                            <td>{{ $permission->name }}</td>
+                                            <td>{{ $permission->display_name }}</td>
+                                            <td>{{ $permission->description }}</td>
+                                            <td><span class="badge badge-success-light">Active</span></td>
+                                            <td>
+                                                <a href="{{ route('permission.show', $permission->id) }}"
+                                                    class="btn btn-primary btn-sm">View</a>
+                                                <a href="{{ route('permission.edit', $permission->id) }}"
+                                                    class="btn btn-primary btn-sm">Edit</a>
+                                                <form action="{{ route('permission.destroy', $permission->id) }}"
+                                                    method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Are you sure you want to delete this role?')">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

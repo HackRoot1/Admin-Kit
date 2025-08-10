@@ -28,57 +28,32 @@
                             <table id="datatables-orders" class="table table-responsive table-striped" width="100%">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Date & Time</th>
-                                        <th>User Name</th>
-                                        <th>Activity Type</th>
-                                        <th>Module</th>
-                                        <th>Record ID</th>
+                                        <th>Action By</th>
+                                        <th>Event</th>
                                         <th>Description</th>
-                                        <th>IP Address</th>
+                                        <th>Action On</th>
+                                        <th>Properties</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>30 Jul 2025 10:00AM</td>
-                                        <td>John Smith</td>
-                                        <td>Login</td>
-                                        <td>Auth</td>
-                                        <td>-</td>
-                                        <td>User logged into the system</td>
-                                        <td>192.168.1.1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>30 Jul 2025 10:05AM</td>
-                                        <td>John Smith</td>
-                                        <td>Create</td>
-                                        <td>Leads</td>
-                                        <td>15</td>
-                                        <td>Created a new lead: "John Doe"</td>
-                                        <td>192.168.1.1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>30 Jul 2025 11:00AM</td>
-                                        <td>Jane Doe</td>
-                                        <td>Update</td>
-                                        <td>Contacts</td>
-                                        <td>22</td>
-                                        <td>Updated contact email for Jane Smith</td>
-                                        <td>10.0.0.2</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>30 Jul 2025 11:15AM</td>
-                                        <td>John Smith</td>
-                                        <td>Delete</td>
-                                        <td>Deals</td>
-                                        <td>37</td>
-                                        <td>Deleted deal: "High Priority Lead"</td>
-                                        <td>192.168.1.1</td>
-                                    </tr>
+                                    @forelse ($activities as $activity)
+                                        <tr>
+                                            <td>{{ $activity->causer?->first_name ?? 'System' }}</td>
+                                            <td>{{ $activity->event }}</td>
+                                            <td>{{ $activity->description }}</td>
+                                            <td>{{ $activity->subject?->first_name }}
+                                            </td>
+                                            <td>
+                                                <pre>{{ json_encode($activity->properties, JSON_PRETTY_PRINT) }}</pre>
+                                            </td>
+                                            <td>{{ $activity->created_at->format('Y-m-d H:i:s') }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            No Activity Found
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

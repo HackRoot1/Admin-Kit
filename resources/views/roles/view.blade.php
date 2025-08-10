@@ -18,6 +18,14 @@
                                     <span><b>Name:</b></span>
                                     <span>{{ $role->name }}</span>
                                 </div>
+                                <div class="col-md-6">
+                                    <span><b>Display Name:</b></span>
+                                    <span>{{ $role->display_name }}</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span><b>Description:</b></span>
+                                    <span>{{ $role->description }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -27,32 +35,30 @@
                             <h5 class="card-title mb-0">Permissions:</h5>
                         </div>
                         <div class="card-body">
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">View Admin </label>
-                                    </div>
+                            <form action="{{ route('roles.updatePermissions', $role->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+
+                                <div class="row g-4">
+                                    @foreach ($permissions as $permission)
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                    value="{{ $permission->name }}" id="perm_{{ $permission->id }}"
+                                                    {{ $role->hasPermission($permission->name) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="perm_{{ $permission->id }}">
+                                                    {{ $permission->display_name }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Create Admin </label>
-                                    </div>
+
+                                <div class="mt-3">
+                                    <button type="submit" class="btn btn-success">Update Permissions</button>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Update Admin </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Delete Admin </label>
-                                    </div>
-                                </div>
-                            </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>

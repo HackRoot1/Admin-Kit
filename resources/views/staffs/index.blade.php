@@ -4,7 +4,8 @@
     <main class="content">
         <div class="container-fluid p-0">
 
-            <a href="{{ route('staffs.create') }}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> New Staff</a>
+            <a href="{{ route('staff.create') }}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> New
+                Staff</a>
             <div class="mb-3">
                 <h1 class="h3 d-inline align-middle">Staffs List</h1>
             </div>
@@ -34,7 +35,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Profile</th>
-                                        <th>Name</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
                                         <th>Email</th>
                                         <th>Added Date</th>
                                         <th>Status</th>
@@ -42,91 +44,43 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><strong>#0001</strong></td>
-                                        <td><img src="./img/avatars/avatar-2.jpg" width="50" alt=""></td>
-                                        <td>Brian Smith</td>
-                                        <td>brian@gmail.com</td>
-                                        <td>2023-12-05</td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" checked type="checkbox" id="view_admin">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('staffs.view') }}" class="btn btn-primary btn-sm">View</a>
-                                            <a href="{{ route('staffs.edit') }}" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="{{ route('staffs.delete') }}" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>#0001</strong></td>
-                                        <td><img src="./img/avatars/avatar-2.jpg" width="50" alt=""></td>
-                                        <td>Brian Smith</td>
-                                        <td>brian@gmail.com</td>
-                                        <td>2023-12-05</td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" checked type="checkbox" id="view_admin">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">View</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>#0001</strong></td>
-                                        <td><img src="./img/avatars/avatar-2.jpg" width="50" alt=""></td>
-                                        <td>Brian Smith</td>
-                                        <td>brian@gmail.com</td>
-                                        <td>2023-12-05</td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="view_admin">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">View</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>#0001</strong></td>
-                                        <td><img src="./img/avatars/avatar-2.jpg" width="50" alt=""></td>
-                                        <td>Brian Smith</td>
-                                        <td>brian@gmail.com</td>
-                                        <td>2023-12-05</td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" checked type="checkbox" id="view_admin">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">View</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>#0001</strong></td>
-                                        <td><img src="./img/avatars/avatar-2.jpg" width="50" alt=""></td>
-                                        <td>Brian Smith</td>
-                                        <td>brian@gmail.com</td>
-                                        <td>2023-12-05</td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="view_admin">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">View</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
+                                    @foreach ($staffs as $staff)
+                                        <tr>
+                                            <td><strong>{{ $staff->id }}</strong></td>
+                                            <td><img src="{{ $staff->profile ?? Avatar::create($staff->first_name . ' ' . $staff->last_name)->toBase64() }}"
+                                                    width="50" alt=""></td>
+                                            <td>{{ $staff->first_name }}</td>
+                                            <td>{{ $staff->last_name }}</td>
+                                            <td>{{ $staff->email }}</td>
+                                            <td>{{ $staff->created_at->format('d-M-Y') }}</td>
+                                            <td>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" checked type="checkbox" id="view_admin">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @permission('view-staff')
+                                                    <a href="{{ route('staff.show', $staff->id) }}"
+                                                        class="btn btn-primary btn-sm">View</a>
+                                                @endpermission
+                                                @permission('update-staff')
+                                                    <a href="{{ route('staff.edit', $staff->id) }}"
+                                                        class="btn btn-primary btn-sm">Edit</a>
+                                                @endpermission
+                                                @permission('delete-staff')
+                                                    <form action="{{ route('staff.destroy', $staff->id) }}" method="POST"
+                                                        style="display:inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Are you sure you want to delete this user?')">
+                                                            Delete
+                                                        </button>
+                                                    </form>
+                                                @endpermission
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
