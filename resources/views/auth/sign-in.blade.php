@@ -16,7 +16,8 @@
                         <div class="card-body">
                             <div class="m-sm-3">
                                 <div class="d-grid gap-2 mb-3">
-                                    <a class='btn btn-google btn-lg' href='#'><i class="fab fa-fw fa-google"></i>
+                                    <a class='btn btn-google btn-lg' href='{{ route('auth.google') }}'><i
+                                            class="fab fa-fw fa-google"></i>
                                         Sign in with Google</a>
                                     <a class='btn btn-facebook btn-lg' href='#'><i
                                             class="fab fa-fw fa-facebook-f"></i> Sign in with Facebook</a>
@@ -38,7 +39,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">Email</label>
                                         <input class="form-control form-control-lg @error('email') is-invalid @enderror"
-                                            type="email" name="email" value="{{ old('email') }}" placeholder="Enter your email" />
+                                            type="email" name="email" value="{{ old('email') }}"
+                                            placeholder="Enter your email" />
                                         @error('email')
                                             <div class="invalid-feedback">
                                                 Please enter Email.

@@ -20,13 +20,22 @@
 
                                 {{-- Profile Pic --}}
                                 <div class="mb-3">
-                                    <label class="form-label" for="profile">Profile Pic</label>
-                                    <input class="form-control @error('profile') is-invalid @enderror" name="profile"
-                                        id="profile" accept=".png, .jpg, .jpeg, .webp" type="file">
+                                    <label for="profile" class="form-label">Profile Image</label>
+                                    <input type="file" name="profile" id="profile"
+                                        class="form-control @error('profile') is-invalid @enderror" accept="image/*"
+                                        onchange="previewProfileImage(event)">
                                     @error('profile')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+                                <div class="mb-3">
+                                    <img id="profile-preview" src="{{ asset('uploads/profile/default.png') }}"
+                                        alt="Profile Preview"
+                                        style="max-width: 150px; display: none; border-radius: 8px; margin-top: 10px;">
+                                </div>
+
+
 
                                 <div class="row">
                                     {{-- First Name --}}
@@ -296,5 +305,24 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        function previewProfileImage(event) {
+            const preview = document.getElementById('profile-preview');
+            const file = event.target.files[0];
+
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+
+                // Revoke the object URL after image loads to free memory
+                preview.onload = function() {
+                    URL.revokeObjectURL(preview.src);
+                }
+            } else {
+                preview.style.display = 'none';
+            }
+        }
     </script>
 @endsection

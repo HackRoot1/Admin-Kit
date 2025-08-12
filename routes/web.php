@@ -22,6 +22,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register')->name('register');
     Route::post('authenticate', 'authenticate')->name('authenticate')->middleware('throttle:10,1');
     Route::post('logout', 'logout')->name('logout');
+    Route::get('auth/redirect', 'googleLogin')->name('auth.google');
+    Route::get('auth/google-callback', 'googleAuthentication')->name('auth.google-callback');
 });
 
 // Dashboard & User Related Routes

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Nnjeim\World\World;
 use Laratrust\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,8 +28,31 @@ class UserController extends Controller
         try {
             DB::transaction(function () use ($validated) {
                 // 1. Create user
+                // Handle profile image
+                if (isset($validated['profile'])) {
 
-                dd($validated['profile']);
+                    $profile = $validated['profile'];
+                    $ext = $profile->getClientOriginalExtension();
+                    $profileName = time() . '.' . $ext;
+                    $profile->move(public_path('uploads/profile'), $profileName);
+
+                    $manager = new ImageManager(Driver::class);
+                    $image = $manager->read(public_path('uploads/profile/' . $profileName));
+
+                    $image->resize(400, 500);
+
+                    $smallDir = public_path('uploads/profile/small');
+                    if (!File::exists($smallDir)) {
+                        File::makeDirectory($smallDir, 0755, true);
+                    }
+
+                    $image->save(public_path('uploads/profile/small/' . $profileName));
+
+                    $validated['profile'] = $profileName;
+                } else {
+                    unset($validated['profile']);
+                }
+
 
                 $user = User::create([
                     'first_name' => $validated['first_name'],
@@ -66,7 +88,7 @@ class UserController extends Controller
 
             return back()
                 ->withInput()
-                ->withErrors($validated)
+                ->withErrors('error', $e->getMessage())
                 ->with('error', 'Staff Not Created. Please Try Again.');
         }
     }
@@ -95,20 +117,20 @@ class UserController extends Controller
         // Update staff
         $staff = User::findOrFail($id);
 
-        
+
         // Handle profile image
         if ($request->hasFile('profile')) {
-            
+
             if ($staff->profile != '') {
                 if (File::exists(public_path('uploads/profile/' . $staff->profile))) {
                     File::delete(public_path('uploads/profile/' . $staff->profile));
                 }
-    
+
                 if (File::exists(public_path('uploads/profile/small/' . $staff->profile))) {
                     File::delete(public_path('uploads/profile/small/' . $staff->profile));
                 }
             }
-            
+
             $profile = $data['profile'];
             $ext = $profile->getClientOriginalExtension();
             $profileName = time() . '.' . $ext;
@@ -121,7 +143,7 @@ class UserController extends Controller
 
             $smallDir = public_path('uploads/profile/small');
             if (!File::exists($smallDir)) {
-                File::makeDirectory($smallDir, 0755, true); 
+                File::makeDirectory($smallDir, 0755, true);
             }
 
             $image->save(public_path('uploads/profile/small/' . $profileName));
