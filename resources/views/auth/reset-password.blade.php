@@ -15,14 +15,37 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="m-sm-3">
-                                <form>
+                                <h2>Reset Password</h2>
+
+                                <form method="POST" action="{{ route('password.update') }}">
+                                    @csrf
+                                    <input type="hidden" name="token" value="{{ $token }}">
+
                                     <div class="mb-3">
-                                        <label class="form-label">Email</label>
-                                        <input class="form-control form-control-lg" type="email" name="email"
-                                            placeholder="Enter your email" />
+                                        <label class="form-label">Email:</label>
+                                        <input class="form-control form-control-lg" type="email" name="email"  placeholder="Enter your email"
+                                            required>
+                                        @error('email')
+                                            <p style="color:red">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">New Password:</label>
+                                        <input class="form-control form-control-lg" type="password" name="password"  placeholder="Enter your password"
+                                            required>
+                                        @error('password')
+                                            <p style="color:red">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Confirm Password:</label>
+                                        <input class="form-control form-control-lg" type="password"
+                                            name="password_confirmation" placeholder="Confirm your email" required>
                                     </div>
                                     <div class="d-grid gap-2 mt-3">
-                                        <a class='btn btn-lg btn-primary' href='index.html'>Reset password</a>
+                                        <button class='btn btn-lg btn-primary' type="submit">Reset Password</button>
                                     </div>
                                 </form>
                             </div>

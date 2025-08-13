@@ -58,13 +58,13 @@
                                             </div>
                                         @enderror
                                         <small>
-                                            <a href='pages-reset-password.html'>Forgot password?</a>
+                                            <a href='{{ route('password.request') }}'>Forgot password?</a>
                                         </small>
                                     </div>
                                     <div>
                                         <div class="form-check align-items-center">
                                             <input id="customControlInline" type="checkbox" class="form-check-input"
-                                                value="remember-me" name="remember-me" checked>
+                                                name="remember">
                                             <label class="form-check-label text-small"
                                                 for="customControlInline">Remember me</label>
                                         </div>

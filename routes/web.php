@@ -13,11 +13,24 @@ Route::get('/countries', [LocationController::class, 'countries']);
 Route::get('/states/{country_id}', [LocationController::class, 'states']);
 Route::get('/cities/{state_id}', [LocationController::class, 'cities']);
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
+
+
 // Auth Routes
 Route::controller(AuthController::class)->group(function () {
     Route::view('login', 'auth.sign-in')->name('auth.sign-in');
     Route::view('register', 'auth.sign-up')->name('auth.sign-up');
     Route::view('reset-password', 'auth.reset-password')->name('auth.reset-password');
+
+    // Forgot Password
+    Route::get('forgot-password', 'showLinkRequestForm')->name('password.request');
+    Route::post('forgot-password', 'sendResetLinkEmail')->name('password.email');
+
+    // Reset Password
+    Route::get('reset-password/{token}', 'showResetForm')->name('password.reset');
+    Route::post('reset-password', 'reset')->name('password.update');
 
     Route::post('register', 'register')->name('register');
     Route::post('authenticate', 'authenticate')->name('authenticate')->middleware('throttle:10,1');
