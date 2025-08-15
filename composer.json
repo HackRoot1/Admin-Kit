@@ -14,8 +14,8 @@
         "laravolt/avatar": "^6.2",
         "nnjeim/world": "^1.1",
         "php-flasher/flasher-laravel": "^2.1",
-        "santigarcor/laratrust": "^8.5",
-        "spatie/laravel-activitylog": "^4.10"
+        "spatie/laravel-activitylog": "^4.10",
+        "spatie/laravel-permission": "^6.21"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16",

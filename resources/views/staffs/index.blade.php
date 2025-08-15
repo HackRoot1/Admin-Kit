@@ -59,15 +59,15 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                {{-- @permission('view-staff') --}}
+                                                @can('view-staff')
                                                     <a href="{{ route('staff.show', $staff->id) }}"
                                                         class="btn btn-primary btn-sm">View</a>
-                                                {{-- @endpermission --}}
-                                                @permission('update-staff')
+                                                @endcan
+                                                @can('update-staff')
                                                     <a href="{{ route('staff.edit', $staff->id) }}"
                                                         class="btn btn-primary btn-sm">Edit</a>
-                                                @endpermission
-                                                @permission('delete-staff')
+                                                @endcan
+                                                @can('delete-staff')
                                                     <form action="{{ route('staff.destroy', $staff->id) }}" method="POST"
                                                         style="display:inline-block;">
                                                         @csrf
@@ -77,7 +77,7 @@
                                                             Delete
                                                         </button>
                                                     </form>
-                                                @endpermission
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

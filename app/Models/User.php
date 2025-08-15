@@ -4,19 +4,17 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\UserAddress;
-use Nnjeim\World\Models\Country;
 use Spatie\Activitylog\LogOptions;
-use Laratrust\Contracts\LaratrustUser;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Laratrust\Traits\HasRolesAndPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements LaratrustUser
+
+class User extends Authenticatable 
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRolesAndPermissions, LogsActivity;
+    use HasFactory, Notifiable, LogsActivity;
 
     public function getActivitylogOptions(): LogOptions
     {

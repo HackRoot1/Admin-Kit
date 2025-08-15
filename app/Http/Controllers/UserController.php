@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Laratrust\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -96,7 +95,20 @@ class UserController extends Controller
     public function show($id)
     {
         $staff = User::with('address', 'roles')->findOrFail($id);
-        $roles = Role::all();
+        // Fetch all roles and pass to view
+        // $roles = Role::all();
+        $roles = [
+            [
+                'name' => 'admin',
+                'display_name' => 'Admin',
+                'description' => 'Admin',
+            ],
+            [
+                'name' => 'staff',
+                'display_name' => 'Staff',
+                'description' => 'Staff',
+            ],
+        ];
         return view('staffs.view', compact('staff', 'roles'));
     }
 
@@ -183,9 +195,10 @@ class UserController extends Controller
             'role_id' => 'required|exists:roles,id',
         ]);
 
-        $user = User::findOrFail($id);
-        $user->syncRoles([$request->role_id]); // replaces existing roles with the new one
+        // replaces existing roles with the new one
         // Or use $user->attachRole($request->role_id) if you want multiple roles
+        $user = User::findOrFail($id);
+        $user->syncRoles([$request->role_id]); 
 
         return redirect()->back()->with('success', 'Role assigned successfully.');
     }
