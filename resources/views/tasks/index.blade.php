@@ -3,7 +3,8 @@
 @section('main')
     <main class="content">
         <div class="container-fluid p-0">
-            <a href="{{ route('tasks.create') }}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> New Task</a>
+            <a href="{{ route('tasks.create') }}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> New
+                Task</a>
             <div class="mb-3">
                 <h1 class="h3 d-inline align-middle">Tasks List</h1>
             </div>
@@ -38,42 +39,51 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><strong>#0001</strong></td>
-                                        <td>Task 1</td>
-                                        <td>This is a dummy task.</td>
-                                        <td>2023-12-05</td>
-                                        <td><span class="badge badge-success-light">Active</span></td>
-                                        <td>
-                                            <a href="{{ route('tasks.view') }}" class="btn btn-primary btn-sm">View</a>
-                                            <a href="{{ route('tasks.edit') }}" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>#0002</strong></td>
-                                        <td>Task 2</td>
-                                        <td>This is a dummy task.</td>
-                                        <td>2023-12-05</td>
-                                        <td><span class="badge badge-danger-light">Inactive</span></td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">View</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>#0003</strong></td>
-                                        <td>Task 3</td>
-                                        <td>This is a dummy task.</td>
-                                        <td>2023-12-05</td>
-                                        <td><span class="badge badge-success-light">Active</span></td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">View</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="#" class="btn btn-primary btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
+                                    @php
+                                        $statuses = [
+                                            'pending' => 'Pending',
+                                            'in_progress' => 'In Progress',
+                                            'completed' => 'Completed',
+                                        ];
+                                    @endphp
+                                    @forelse ($tasks as $task)
+                                        <tr>
+                                            <td><strong>#{{ $task->id }}</strong></td>
+                                            <td>{{ $task->title }}</td>
+                                            <td>{{ $task->description }}</td>
+                                            <td>{{ $task->due_date }}</td>
+                                            <td>
+                                                @if ($task->status === 'pending')
+                                                    <span
+                                                        class="badge badge-danger-light">{{ $statuses[$task->status] ?? 'Unknown' }}</span>
+                                                @elseif($task->status === 'in_progress')
+                                                    <span
+                                                        class="badge badge-warning-light">{{ $statuses[$task->status] ?? 'Unknown' }}</span>
+                                                @elseif($task->status === 'completed')
+                                                    <span
+                                                        class="badge badge-success-light">{{ $statuses[$task->status] ?? 'Unknown' }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('tasks.view', $task->id) }}"
+                                                    class="btn btn-primary btn-sm">View</a>
+                                                <a href="{{ route('tasks.edit', $task->id) }}"
+                                                    class="btn btn-primary btn-sm">Edit</a>
+                                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST"
+                                                    class="d-inline">
+                                                    {{-- Assuming you have a route for deleting tasks --}}
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-primary btn-sm">Delete</button>
+                                                </form>
+                                                {{-- <a href="#" class="btn btn-primary btn-sm">Delete</a> --}}
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td class="6" class="text-center">No Tasks Found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

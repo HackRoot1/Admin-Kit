@@ -2,41 +2,44 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PermissionController;
-
-
-Route::get('/countries', [LocationController::class, 'countries']);
-Route::get('/states/{country_id}', [LocationController::class, 'states']);
-Route::get('/cities/{state_id}', [LocationController::class, 'cities']);
-
-use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
+
+Route::controller(LocationController::class)->group(function () {
+    Route::get('/countries', 'countries');
+    Route::get('/states/{country_id}', 'states');
+    Route::get('/cities/{state_id}', 'cities');
+});
 
 
 // Auth Routes
 Route::controller(AuthController::class)->group(function () {
+    // Basic Authentication
     Route::view('login', 'auth.sign-in')->name('auth.sign-in');
     Route::view('register', 'auth.sign-up')->name('auth.sign-up');
-    Route::view('reset-password', 'auth.reset-password')->name('auth.reset-password');
-
-    // Forgot Password
-    Route::get('forgot-password', 'showLinkRequestForm')->name('password.request');
-    Route::post('forgot-password', 'sendResetLinkEmail')->name('password.email');
-
-    // Reset Password
-    Route::get('reset-password/{token}', 'showResetForm')->name('password.reset');
-    Route::post('reset-password', 'reset')->name('password.update');
-
     Route::post('register', 'register')->name('register');
     Route::post('authenticate', 'authenticate')->name('authenticate')->middleware('throttle:10,1');
     Route::post('logout', 'logout')->name('logout');
-    Route::get('auth/redirect', 'googleLogin')->name('auth.google');
-    Route::get('auth/google-callback', 'googleAuthentication')->name('auth.google-callback');
+    
+    // Forgot Password
+    Route::get('forgot-password', 'showLinkRequestForm')->name('password.request');
+    Route::post('forgot-password', 'sendResetLinkEmail')->name('password.email');
+    
+    // Reset Password    
+    Route::view('reset-password', 'auth.reset-password')->name('auth.reset-password');
+    Route::get('reset-password/{token}', 'showResetForm')->name('password.reset');
+    Route::post('reset-password', 'reset')->name('password.update');
+
+    // Socialite Login
+    Route::get('auth/redirection/{provider}', 'authProviderRedirect')->name('auth.redirection');
+    Route::get('auth/{provider}/callback', 'socialAuthentication')->name('auth.social-callback');
 });
 
 // Dashboard & User Related Routes
@@ -88,17 +91,20 @@ Route::middleware('auth')->group(function () {
     });
 
     // Tasks Related Routes
-    Route::view('tasks-index', 'tasks.index')->name('tasks.index')->middleware('permission:view-task');
-    Route::view('tasks-create', 'tasks.create')->name('tasks.create')->middleware('permission:create-task');
-    Route::view('tasks-store', 'tasks.store')->name('tasks.store')->middleware('permission:create-task');
-    Route::view('tasks-edit', 'tasks.edit')->name('tasks.edit')->middleware('permission:update-task');
-    Route::view('tasks-update', 'tasks.update')->name('tasks.update')->middleware('permission:update-task');
-    Route::view('tasks-delete', 'tasks.delete')->name('tasks.delete')->middleware('permission:delete-task');
-    Route::view('tasks-view', 'tasks.view')->name('tasks.view')->middleware('permission:view-task');
+    Route::controller(TaskController::class)->group(function () {
+        Route::get('tasks-index', 'index')->name('tasks.index');
+        Route::view('tasks-create', 'tasks.create')->name('tasks.create');
+        Route::post('tasks-store', 'store')->name('tasks.store');
+        Route::get('tasks-edit/{id}', 'edit')->name('tasks.edit');
+        Route::put('tasks-update/{id}', 'update')->name('tasks.update');
+        Route::delete('tasks-delete/{id}', 'destroy')->name('tasks.destroy');
+        Route::get('tasks-view/{id}', 'show')->name('tasks.view');
+    });
 
     // Invoice Related Routes
     Route::view('invoices', 'invoices.invoice')->name('invoices.index');
-    Route::view('payments', 'invoices.payments')->name('invoices.payments');
+    Route::view('payments', 'invoices.payments')->name('make.card.payments');
+    Route::view('online-payment', 'invoices.make-pay-online')->name('make.pay.online');
     Route::view('checkout', 'invoices.make-payment')->name('invoices.checkout');
 
     // Activity Log

@@ -16,23 +16,35 @@
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <span><b>Title:</b></span>
-                                    <span>Task 1</span>
+                                    <span>{{ $task->title }}</span>
                                 </div>
                                 <div class="col-md-6">
                                     <span><b>Description:</b></span>
-                                    <span>This is a dummy task.</span>
+                                    <span>{{ $task->description }}</span>
                                 </div>
                                 <div class="col-md-6">
                                     <span><b>Due Date:</b></span>
-                                    <span>2023-12-05</span>
+                                    <span>{{ date('d-M-Y', strtotime($task->due_date)) }}</span>
                                 </div>
                                 <div class="col-md-6">
                                     <span><b>Status:</b></span>
-                                    <span class="badge badge-danger-light">Inactive</span>
+                                    @if ($task->status == 'pending')
+                                        <span class="badge badge-danger-light">
+                                            {{ ucfirst($task->status) }}
+                                        </span>
+                                    @elseif($task->status == 'in_progress')
+                                        <span class="badge badge-warning-light">
+                                            {{ ucfirst($task->status) }}
+                                        </span>
+                                    @elseif($task->status == 'completed')
+                                        <span class="badge badge-success-light">
+                                            {{ ucfirst($task->status) }}
+                                        </span>
+                                    @endif
                                 </div>
                                 <div class="col-md-6">
                                     <span><b>Created At:</b></span>
-                                    <span>2023-12-05</span>
+                                    <span>{{ $task->created_at->format('d-M-Y') }}</span>
                                 </div>
                             </div>
                         </div>

@@ -23,8 +23,6 @@ class RoleRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:50|unique:roles,name,' . $this->route('id'),
-            'display_name' => 'nullable|string|max:100',
-            'description' => 'nullable|string|max:255',
         ];
     }
 }

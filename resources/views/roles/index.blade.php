@@ -35,9 +35,6 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Display Name</th>
-                                        <th>Description</th>
-                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -46,9 +43,6 @@
                                         <tr>
                                             <td><strong># {{ $role->id }}</strong></td>
                                             <td>{{ $role->name }}</td>
-                                            <td>{{ $role->display_name }}</td>
-                                            <td>{{ $role->description }}</td>
-                                            <td><span class="badge badge-success-light">Active</span></td>
                                             <td>
                                                 <a href="{{ route('role.show', $role->id) }}"
                                                     class="btn btn-primary btn-sm">View</a>

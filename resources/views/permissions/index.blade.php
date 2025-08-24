@@ -32,9 +32,6 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Display Name</th>
-                                        <th>Description</th>
-                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -43,12 +40,7 @@
                                         <tr>
                                             <td><strong># {{ $permission->id }}</strong></td>
                                             <td>{{ $permission->name }}</td>
-                                            <td>{{ $permission->display_name }}</td>
-                                            <td>{{ $permission->description }}</td>
-                                            <td><span class="badge badge-success-light">Active</span></td>
                                             <td>
-                                                <a href="{{ route('permission.show', $permission->id) }}"
-                                                    class="btn btn-primary btn-sm">View</a>
                                                 <a href="{{ route('permission.edit', $permission->id) }}"
                                                     class="btn btn-primary btn-sm">Edit</a>
                                                 <form action="{{ route('permission.destroy', $permission->id) }}"

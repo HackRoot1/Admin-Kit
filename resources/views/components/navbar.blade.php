@@ -83,9 +83,8 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-icon pe-md-0 dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                    {{-- <img src="{{ $staff->profile ?? Avatar::create($staff->first_name . ' ' . $staff->last_name)->toBase64() }}" class="avatar img-fluid rounded" --}}
-                    <img src="{{ asset('assets/img/avatars/avatar.jpg') }}" class="avatar img-fluid rounded"
-                        alt="Charles Hall" />
+                    <img src="{{ Auth::user()->profile ? asset('uploads/profile/small/' . Auth::user()->profile) : Avatar::create(Auth::user()->first_name . ' ' . Auth::user()->last_name)->toBase64() }}"
+                        class="avatar img-fluid rounded" width="50" alt="Avatar">
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                     <a class='dropdown-item' href='{{ route('settings.profile') }}'><i class="align-middle me-1"
@@ -100,7 +99,8 @@
                     <div class="dropdown-item" href="#">
                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                             @csrf
-                            <button type="submit" style="background:none;border:none;padding:0;color:blue;cursor:pointer;">
+                            <button type="submit"
+                                style="background:none;border:none;padding:0;color:blue;cursor:pointer;">
                                 Log out
                             </button>
                         </form>

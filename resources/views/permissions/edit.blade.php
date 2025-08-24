@@ -26,26 +26,6 @@
                                         </div>
                                     @enderror
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="name">Display Name</label>
-                                    <input type="text" class="form-control @error('display_name') is-invalid @enderror"
-                                        name="display_name" value="{{ old('display_name', $permission->display_name) }}" id="name" placeholder="Display Name">
-                                    @error('display_name')
-                                        <div class="invalid-feedback">
-                                            Please enter Display Name.
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="name">Description</label>
-                                    <input type="text" class="form-control @error('description') is-invalid @enderror"
-                                        name="description" value="{{ old('description', $permission->description) }}" id="name" placeholder="Description">
-                                    @error('description')
-                                        <div class="invalid-feedback">
-                                            Please enter Description.
-                                        </div>
-                                    @enderror
-                                </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>

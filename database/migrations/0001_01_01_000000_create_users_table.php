@@ -25,7 +25,8 @@ return new class extends Migration
             $table->json('skills')->nullable(); // Storing as JSON for flexibility
             $table->string('department')->nullable();
             $table->string('profile')->nullable();
-            $table->string('google_id')->nullable();
+            $table->string('auth_provider')->nullable();
+            $table->string('auth_provider_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

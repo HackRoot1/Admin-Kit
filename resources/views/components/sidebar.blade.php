@@ -72,7 +72,7 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class='sidebar-link' href='{{ route('invoices.payments') }}'>
+                <a class='sidebar-link' href='{{ route('make.card.payments') }}'>
                     <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Payments</span>
                 </a>
             </li>

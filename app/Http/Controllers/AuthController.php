@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -100,41 +101,71 @@ class AuthController extends Controller
 
 
     // Socialite Login
-    public function googleLogin()
+    public function authProviderRedirect($provider)
     {
-        return Socialite::driver('google')->redirect();
+        // dd($provider);
+        if ($provider) {
+            return Socialite::driver($provider)->redirect();
+        }
+
+        return redirect()->route('auth.sign-in')->with('error', 'Invalid authentication provider.');
     }
 
-    public function googleAuthentication()
+    public function socialAuthentication($provider)
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            if ($provider) {
+                $socialUser = Socialite::driver($provider)->user();
 
-            $user = User::where('google_id', $googleUser->id)->first();
+                // 1) Try to find user by provider + provider id
+                $user = User::where('auth_provider', $provider)
+                    ->where('auth_provider_id', $socialUser->id)
+                    ->first();
 
-            if ($user) {
-                Auth::login($user);
-                return redirect()->route('index');
-            } else {
-                $nameParts = explode(' ', $googleUser->name, 2);
-                $first_name = $nameParts[0] ?? '';
-                $last_name = $nameParts[1] ?? '';
+                // dd($user);
 
-                $userData = User::create([
-                    'first_name' => $first_name,
-                    'last_name' => $last_name,
-                    'email' => $googleUser->email,
-                    'password' => Hash::make('Password@123'),
-                    'google_id' => $googleUser->id,
-                ]);
+                // 2) Fallback: if no provider-linked user, try to find by email and link accounts
+                if (! $user && ! empty($socialUser->email)) {
+                    $user = User::where('email', $socialUser->email)->first();
 
-                if ($userData) {
-                    Auth::login($userData);
+                    if ($user) {
+                        // Link this social provider to existing account
+                        $user->update([
+                            'auth_provider' => $provider,
+                            'auth_provider_id' => $socialUser->id,
+                        ]);
+                    }
+                }
+
+                // 3) If still no user, create a new one (ensure email exists)
+                if (! $user) {
+                    if (empty($socialUser->email)) {
+                        return redirect()->route('auth.sign-in')->with('error', 'Social provider did not return an email address.');
+                    }
+
+                    $nameParts = explode(' ', $socialUser->name ?? '', 2);
+                    $first_name = $nameParts[0] ?? '';
+                    $last_name = $nameParts[1] ?? '';
+
+                    $user = User::create([
+                        'first_name' => $first_name,
+                        'last_name' => $last_name,
+                        'email' => $socialUser->email,
+                        // generate a random password - users can reset later
+                        'password' => Str::random(24),
+                        'auth_provider_id' => $socialUser->id,
+                        'auth_provider' => $provider,
+                    ]);
+                }
+
+                if ($user) {
+                    Auth::login($user);
                     return redirect()->route('index');
                 }
             }
         } catch (Exception $e) {
-            dd($e);
+            dd($e->getMessage());
+            return redirect()->route('auth.sign-in')->with('error', 'Social authentication failed.');
         }
     }
 

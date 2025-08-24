@@ -24,7 +24,7 @@
                                     <span><b>Roles:</b></span>
                                     @if ($staff->roles->isNotEmpty())
                                         @foreach ($staff->roles as $role)
-                                            <span class="badge bg-primary">{{ $role->display_name }}</span>
+                                            <span class="badge bg-primary">{{ $role->name }}</span>
                                         @endforeach
                                     @else
                                         <span>No roles assigned</span>
@@ -64,7 +64,7 @@
                                                             @foreach ($roles as $role)
                                                                 <option value="{{ $role->id }}"
                                                                     {{ $staff->roles->contains($role->id) ? 'selected' : '' }}>
-                                                                    {{ $role->display_name }}
+                                                                    {{ $role->name }}
                                                                 </option>
                                                             @endforeach
                                                         </select>

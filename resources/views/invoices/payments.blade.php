@@ -3,7 +3,7 @@
 @section('main')
     <main class="content">
         <div class="container-fluid p-0">
-            <a href="make-payment.php" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Make Payment</a>
+            <a href="{{ route('make.pay.online') }}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Make Payment</a>
             <div class="mb-3">
                 <h1 class="h3 d-inline align-middle">Payments List</h1>
             </div>

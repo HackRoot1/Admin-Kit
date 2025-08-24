@@ -84,7 +84,7 @@
                                     {{-- Contact Number --}}
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label" for="contact_number">Contact Number</label>
-                                        <input type="number"
+                                        <input type="text"
                                             class="form-control @error('contact_number') is-invalid @enderror"
                                             name="contact_number" id="contact_number"
                                             value="{{ old('contact_number', $staff->contact_number) }}">
@@ -96,7 +96,7 @@
                                     {{-- Emergency Contact --}}
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label" for="emergency_contact_number">Emergency Contact</label>
-                                        <input type="tel"
+                                        <input type="text"
                                             class="form-control @error('emergency_contact_number') is-invalid @enderror"
                                             name="emergency_contact_number" id="emergency_contact_number"
                                             value="{{ old('emergency_contact_number', $staff->emergency_contact_number) }}">
@@ -179,13 +179,23 @@
 
                                 <div class="mb-3">
                                     <label class="form-label" for="inputAddress">Address</label>
-                                    <input type="text" class="form-control" id="inputAddress"
-                                        placeholder="1234 Main St">
+                                    <input type="text"
+                                        class="form-control @error('address_line_1') is-invalid @enderror"
+                                        name="address_line_1" id="inputAddress" placeholder="1234 Main St"
+                                        value="{{ old('address_line_1', $staff->address->address_line_1) }}">
+                                    @error('address_line_1')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="inputAddress2">Address 2</label>
-                                    <input type="text" class="form-control" id="inputAddress2"
-                                        placeholder="Apartment, studio, or floor">
+                                    <input type="text"
+                                        class="form-control @error('address_line_2') is-invalid @enderror"
+                                        name="address_line_2" id="inputAddress" placeholder="1234 Main St"
+                                        value="{{ old('address_line_2', $staff->address->address_line_2) }}">
+                                    @error('address_line_2')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="row">
                                     <div class="mb-3 col-md-3">
@@ -211,7 +221,13 @@
                                     </div>
                                     <div class="mb-3 col-md-3">
                                         <label class="form-label" for="zip">Zip</label>
-                                        <input type="text" class="form-control" id="zip">
+                                        <input type="text"
+                                            class="form-control @error('zip_code') is-invalid @enderror" name="zip_code"
+                                            id="zip" placeholder="1234 Main St"
+                                            value="{{ old('zip_code', $staff->address->zip_code) }}">
+                                        @error('zip_code')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 

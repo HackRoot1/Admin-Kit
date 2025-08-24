@@ -18,14 +18,6 @@
                                     <span><b>Name:</b></span>
                                     <span>{{ $role->name }}</span>
                                 </div>
-                                <div class="col-md-6">
-                                    <span><b>Display Name:</b></span>
-                                    <span>{{ $role->display_name }}</span>
-                                </div>
-                                <div class="col-md-6">
-                                    <span><b>Description:</b></span>
-                                    <span>{{ $role->description }}</span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -45,9 +37,9 @@
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" name="permissions[]"
                                                     value="{{ $permission->name }}" id="perm_{{ $permission->id }}"
-                                                    {{ $role->hasPermission($permission->name) ? 'checked' : '' }}>
+                                                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="perm_{{ $permission->id }}">
-                                                    {{ $permission->display_name }}
+                                                    {{ $permission->name }}
                                                 </label>
                                             </div>
                                         </div>

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
@@ -96,19 +98,7 @@ class UserController extends Controller
     {
         $staff = User::with('address', 'roles')->findOrFail($id);
         // Fetch all roles and pass to view
-        // $roles = Role::all();
-        $roles = [
-            [
-                'name' => 'admin',
-                'display_name' => 'Admin',
-                'description' => 'Admin',
-            ],
-            [
-                'name' => 'staff',
-                'display_name' => 'Staff',
-                'description' => 'Staff',
-            ],
-        ];
+        $roles = Role::all();
         return view('staffs.view', compact('staff', 'roles'));
     }
 
@@ -122,13 +112,30 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
+        $addressData = Arr::only($data, [
+            'address_line_1',
+            'address_line_2',
+            'country',
+            'state',
+            'city',
+            'zip_code',
+        ]);
+
+        $personalData = Arr::except($data, [
+            'address_line_1',
+            'address_line_2',
+            'country',
+            'state',
+            'city',
+            'zip_code',
+        ]);
+
         // Handle password
         if (empty($data['password'])) {
             unset($data['password']);
         }
         // Update staff
         $staff = User::findOrFail($id);
-
 
         // Handle profile image
         if ($request->hasFile('profile')) {
@@ -166,8 +173,10 @@ class UserController extends Controller
             unset($data['profile']);
         }
 
-        $updated = $staff->update($data);
+        $updated = $staff->update($personalData);
 
+        // 2. Update related address
+        $staff->address()->update($addressData);
 
         if (!$updated) {
             return back()->with('error', 'Something went wrong');
@@ -197,8 +206,9 @@ class UserController extends Controller
 
         // replaces existing roles with the new one
         // Or use $user->attachRole($request->role_id) if you want multiple roles
+        $role = Role::find($request->role_id);
         $user = User::findOrFail($id);
-        $user->syncRoles([$request->role_id]); 
+        $user->syncRoles($role);
 
         return redirect()->back()->with('success', 'Role assigned successfully.');
     }
