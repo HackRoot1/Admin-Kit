@@ -10,6 +10,8 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentWebhookController;
 
 
 Route::controller(LocationController::class)->group(function () {
@@ -27,11 +29,11 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register')->name('register');
     Route::post('authenticate', 'authenticate')->name('authenticate')->middleware('throttle:10,1');
     Route::post('logout', 'logout')->name('logout');
-    
+
     // Forgot Password
     Route::get('forgot-password', 'showLinkRequestForm')->name('password.request');
     Route::post('forgot-password', 'sendResetLinkEmail')->name('password.email');
-    
+
     // Reset Password    
     Route::view('reset-password', 'auth.reset-password')->name('auth.reset-password');
     Route::get('reset-password/{token}', 'showResetForm')->name('password.reset');
@@ -106,6 +108,16 @@ Route::middleware('auth')->group(function () {
     Route::view('payments', 'invoices.payments')->name('make.card.payments');
     Route::view('online-payment', 'invoices.make-pay-online')->name('make.pay.online');
     Route::view('checkout', 'invoices.make-payment')->name('invoices.checkout');
+
+    Route::get('/pay', [PaymentController::class, 'form'])->name('pay.form');
+    Route::post('/pay/order', [PaymentController::class, 'createOrder'])->name('pay.order');
+    Route::post('/payment/verify', [PaymentController::class, 'verify'])->name('payment.verify');
+
+    Route::get('/payment/success/{payment}', [PaymentController::class, 'success'])->name('payments.success');
+    Route::get('/payment/failed/{payment?}', [PaymentController::class, 'failed'])->name('payments.failed');
+
+    // optional webhook
+    Route::post('/razorpay/webhook', [PaymentWebhookController::class, 'handle'])->name('razorpay.webhook');
 
     // Activity Log
     Route::controller(ActivityController::class)->group(function () {

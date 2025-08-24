@@ -39,6 +39,15 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_CALLBACK_REDIRECTS'),
-    ]
+    ],
+
+
+    // Razorpay Payment Gateway
+    'razorpay' => [
+        'key'           => env('RAZORPAY_KEY_ID'),
+        'secret'        => env('RAZORPAY_KEY_SECRET'),
+        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
+        'currency'      => env('RAZORPAY_CURRENCY', 'INR'),
+    ],
 
 ];

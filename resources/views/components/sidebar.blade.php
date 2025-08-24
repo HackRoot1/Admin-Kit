@@ -76,6 +76,11 @@
                     <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Payments</span>
                 </a>
             </li>
+            <li class="sidebar-item">
+                <a class='sidebar-link' href='{{ route('pay.form') }}'>
+                    <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Razorpay Payments</span>
+                </a>
+            </li>
 
             <li class="sidebar-header">
                 Logs
